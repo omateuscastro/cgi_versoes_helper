@@ -24,6 +24,6 @@ dev_dependencies:
 
 # The following section is specific to Flutter.
 flutter:
-  plugin:
-    androidPackage: io.github.omateuscastro.cgi_versoes_helper
-    pluginClass: CGIVersoesHelperPlugin
+  # plugin:
+  #   androidPackage: io.github.omateuscastro.cgi_versoes_helper
+  #   pluginClass: CGIVersoesHelperPlugin
