@@ -1,0 +1,29 @@
+name: cgi_versoes_helper
+description: A new Flutter package project.
+version: 0.0.1
+author:
+homepage:
+
+environment:
+  sdk: ">=2.7.0 <3.0.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+  dio: ^3.0.9
+  intl: ^0.16.1
+  package_info: ^0.4.0+18
+  url_launcher: ^5.4.7
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+
+# For information on the generic Dart part of this file, see the
+# following page: https://dart.dev/tools/pub/pubspec
+
+# The following section is specific to Flutter.
+flutter:
+  plugin:
+    androidPackage: io.github.omateuscastro.cgi_versoes_helper
+    pluginClass: CGIVersoesHelperPlugin
