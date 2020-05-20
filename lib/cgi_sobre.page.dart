@@ -1,7 +1,7 @@
 library cgi_versoes_helper;
 
 import 'package:cgi_versoes_helper/cgi_notas_versao.page.dart';
-import 'package:dio/dio.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:package_info/package_info.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -9,6 +9,10 @@ import 'package:url_launcher/url_launcher.dart';
 import 'models/versao.dart';
 
 class CGISobrePage extends StatefulWidget {
+  final String urlAndroid;
+
+  CGISobrePage({this.urlAndroid});
+
   @override
   _CGISobrePageState createState() => _CGISobrePageState();
 }
@@ -17,6 +21,11 @@ class _CGISobrePageState extends State<CGISobrePage> {
   Future<String> getVersionNumber() async {
     PackageInfo packageInfo = await PackageInfo.fromPlatform();
     return packageInfo.version;
+  }  
+
+  Future<String> getUrlPackageName() async {
+    PackageInfo packageInfo = await PackageInfo.fromPlatform();
+    return 'https://play.google.com/store/apps/details?id=${packageInfo.packageName}';
   }
 
   int versonify(String versao) {
@@ -35,13 +44,15 @@ class _CGISobrePageState extends State<CGISobrePage> {
 
     int _iVersaoAtual = this.versonify(versaoAtual);
 
-    Response response =
-        await Dio().get('https://admrh-versions.herokuapp.com/lastversion/2');
+    QuerySnapshot snapshot =
+        await Firestore.instance.collection("Info").limit(1).getDocuments();
 
-    var data = response.data;
-    var ult = UltimaVersao.fromJson(data[0]);
+    List<UltimaVersao> ultimaVersao =
+      snapshot.documents.map((ult) => new UltimaVersao.fromDocument(ult)).toList();
 
-    int _iUltimaVersao = this.versonify(ult.lastversion);
+    var ult = ultimaVersao[0];
+
+    int _iUltimaVersao = this.versonify(ult.lastVersion);
 
     return !(_iVersaoAtual < _iUltimaVersao);
   }
@@ -118,7 +129,7 @@ class _CGISobrePageState extends State<CGISobrePage> {
                 textColor: Colors.white,
                 color: Theme.of(context).buttonColor,
                 child: Text(
-                  "Notas de Versão",
+                  "Notas de Versão 3",
                   style: TextStyle(
                     fontSize: 28,
                     color: Colors.white,
@@ -142,8 +153,8 @@ class _CGISobrePageState extends State<CGISobrePage> {
   }
 
   _launchURL() async {
-    const url =
-        'https://play.google.com/store/apps/details?id=cgi.com.br.inspecaoequipamentos';
+    final url = await getUrlPackageName();
+   
     if (await canLaunch(url)) {
       await launch(url);
     } else {
