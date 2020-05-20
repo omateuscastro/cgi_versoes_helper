@@ -125,7 +125,7 @@ class _CGISobrePageState extends State<CGISobrePage> {
                 textColor: Colors.white,
                 color: Theme.of(context).buttonColor,
                 child: Text(
-                  "Notas de Versão 3",
+                  "Notas de Versão",
                   style: TextStyle(
                     fontSize: 28,
                     color: Colors.white,
