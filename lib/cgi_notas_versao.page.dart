@@ -1,8 +1,8 @@
 library cgi_versoes_helper;
 
-import 'package:dio/dio.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter/material.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 import 'models/versao.dart';
 
@@ -23,17 +23,13 @@ class _CGINotasVersaoPageState extends State<CGINotasVersaoPage> {
   }
 
   Future<List<Versao>> _fetchVersoes() async {
-    final jobsListAPIUrl =
-        'https://admrh-versions.herokuapp.com/releasenotes/2';
-    final response = await Dio().get(jobsListAPIUrl);
+    QuerySnapshot snapshot =
+        await Firestore.instance.collection("Versoes").getDocuments();
 
-    if (response.statusCode == 200) {
-      //List jsonResponse = json.decode(response.body);
-      List jsonResponse = response.data;
-      return jsonResponse.map((job) => new Versao.fromJson(job)).toList();
-    } else {
-      throw Exception('Failed to load jobs from API');
-    }
+    List<Versao> versoes =
+        snapshot.documents.map((ver) => new Versao.fromDocument(ver)).toList();
+
+    return versoes;
   }
 
   ListView _jobsListView(data) {
@@ -50,12 +46,26 @@ class _CGINotasVersaoPageState extends State<CGINotasVersaoPage> {
               '${data[index].major}.${data[index].minor}.${data[index].patch}',
               data[index].description,
               Icons.update,
-              formatter.format(DateTime.parse(data[index].launchDate)));
+              formatter.format(DateTime.parse(data[index].launchDate)),
+              data[index].notes);
         });
   }
 
-  ListTile _tile(
-      String title, String subtitle, IconData icon, String launchDate) {
+  ListTile _tile(String title, String subtitle, IconData icon,
+      String launchDate, List<String> notes) {
+    List<Widget> widgets = [
+          Text(
+            launchDate,
+            style: TextStyle(
+              fontWeight: FontWeight.w500,
+              fontSize: 16,
+            ),
+          ),
+        ] +
+        notes
+            .map((name) => new Text(String.fromCharCode(0x2022) + " " + name))
+            .toList();
+
     return ListTile(
       title: Text(
         title,
@@ -66,18 +76,7 @@ class _CGINotasVersaoPageState extends State<CGINotasVersaoPage> {
       ),
       subtitle: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          Text(
-            launchDate,
-            style: TextStyle(
-              fontWeight: FontWeight.w500,
-              fontSize: 16,
-            ),
-          ),
-          Text(
-            subtitle,
-          ),
-        ],
+        children: widgets,
       ),
       leading: Icon(
         icon,
@@ -92,11 +91,20 @@ class _CGINotasVersaoPageState extends State<CGINotasVersaoPage> {
       builder: (context, snapshot) {
         if (snapshot.hasData) {
           List<Versao> data = snapshot.data;
+
           return _jobsListView(data);
         } else if (snapshot.hasError) {
           return Text("${snapshot.error}");
         }
-        return CircularProgressIndicator();
+        return Container(
+          alignment: Alignment.center,
+          padding: EdgeInsets.only(top: 10.0),
+          child: CircularProgressIndicator(
+            valueColor: AlwaysStoppedAnimation(
+              Theme.of(context).primaryColor,
+            ),
+          ),
+        );
       },
     );
   }

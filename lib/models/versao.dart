@@ -1,60 +1,74 @@
-class UltimaVersao {
-  String lastversion;
+import 'package:cloud_firestore/cloud_firestore.dart';
 
-  UltimaVersao({this.lastversion});
+class UltimaVersao {
+  String lastVersion;
+
+  UltimaVersao({this.lastVersion});
 
   UltimaVersao.fromJson(Map<String, dynamic> json) {
-    lastversion = json['lastversion'];
+    lastVersion = json['lastVersion'];
+  }
+
+  factory UltimaVersao.fromDocument(DocumentSnapshot doc) {
+    return UltimaVersao(
+      lastVersion: doc['lastVersion'],
+    );
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['lastversion'] = this.lastversion;
+    data['lastVersion'] = this.lastVersion;
     return data;
   }
 }
 
 class Versao {
-  int id;
-  String name;
+  String id;
   int major;
   int minor;
   int patch;
   String launchDate;
   String description;
-  int appId;
+  List<String> notes;
 
   Versao(
       {this.id,
-      this.name,
       this.major,
       this.minor,
       this.patch,
       this.launchDate,
       this.description,
-      this.appId});
+      this.notes});
 
   Versao.fromJson(Map<String, dynamic> json) {
     id = json['id'];
-    name = json['name'];
     major = json['major'];
     minor = json['minor'];
     patch = json['patch'];
     launchDate = json['launch_date'];
     description = json['description'];
-    appId = json['app_id'];
+  }
+
+  factory Versao.fromDocument(DocumentSnapshot doc) {
+    return Versao(
+      id: doc.documentID,
+      major: doc['major'],
+      minor: doc['minor'],
+      patch: doc['patch'],
+      launchDate: doc['launch_date'],
+      description: doc['description'] ?? "",
+      notes: new List<String>.from(doc['notes']),
+    );
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['id'] = this.id;
-    data['name'] = this.name;
     data['major'] = this.major;
     data['minor'] = this.minor;
     data['patch'] = this.patch;
     data['launch_date'] = this.launchDate;
     data['description'] = this.description;
-    data['app_id'] = this.appId;
     return data;
   }
 }
