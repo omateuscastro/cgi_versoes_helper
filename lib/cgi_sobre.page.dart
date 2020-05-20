@@ -9,10 +9,6 @@ import 'package:url_launcher/url_launcher.dart';
 import 'models/versao.dart';
 
 class CGISobrePage extends StatefulWidget {
-  final String urlAndroid;
-
-  CGISobrePage({this.urlAndroid});
-
   @override
   _CGISobrePageState createState() => _CGISobrePageState();
 }
