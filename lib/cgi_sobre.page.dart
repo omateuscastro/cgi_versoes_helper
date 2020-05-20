@@ -9,10 +9,6 @@ import 'package:url_launcher/url_launcher.dart';
 import 'models/versao.dart';
 
 class CGISobrePage extends StatefulWidget {
-  final String urlAndroid;
-
-  CGISobrePage({this.urlAndroid});
-
   @override
   _CGISobrePageState createState() => _CGISobrePageState();
 }
@@ -129,7 +125,7 @@ class _CGISobrePageState extends State<CGISobrePage> {
                 textColor: Colors.white,
                 color: Theme.of(context).buttonColor,
                 child: Text(
-                  "Notas de Versão 3",
+                  "Notas de Versão",
                   style: TextStyle(
                     fontSize: 28,
                     color: Colors.white,
