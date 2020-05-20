@@ -1,6 +1,6 @@
 name: cgi_versoes_helper
-description: A new Flutter package project.
-version: 0.0.1
+description: Pacote para controle de versão e notas de versão para os Apps da CGI Software.
+version: 1.0.0
 author:
 homepage:
 
