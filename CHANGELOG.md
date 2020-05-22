@@ -1,7 +1,10 @@
+## [1.0.5] - 22/05/2020.
+
+* Adicionada dependencia do cloud_firestore.
+
 ## [1.0.4] - 22/05/2020.
 
-* Removida dependencia fixa do Cloud_Firebase.
-* Adicionada na documentação necessidade do projeto possuir o Cloud_Firebase como dependencia.
+* Removida dependencia fixa do cloud_firestore.
 
 ## [1.0.3] - 22/05/2020.
 
