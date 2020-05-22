@@ -23,8 +23,12 @@ class _CGINotasVersaoPageState extends State<CGINotasVersaoPage> {
   }
 
   Future<List<Versao>> _fetchVersoes() async {
-    QuerySnapshot snapshot =
-        await Firestore.instance.collection("Versoes").getDocuments();
+    QuerySnapshot snapshot = await Firestore.instance
+        .collection("Versoes")
+        .orderBy("major", descending: true)
+        .orderBy("minor", descending: true)
+        .orderBy("patch", descending: true)
+        .getDocuments();
 
     List<Versao> versoes =
         snapshot.documents.map((ver) => new Versao.fromDocument(ver)).toList();
