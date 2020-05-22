@@ -1,3 +1,7 @@
+## [1.0.3] - 22/05/2020.
+
+* Criada documentação.
+
 ## [1.0.2] - 22/05/2020.
 
 * Padronização do Pacote.

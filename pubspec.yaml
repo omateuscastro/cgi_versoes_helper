@@ -1,8 +1,8 @@
 name: cgi_versoes_helper
 description: Pacote para controle de versão e notas de versão para os Apps da CGI Software.
-version: 1.0.2
-author: Mateus Castro
+version: 1.0.3
 homepage: http://www.webcgi.com.br
+repository: https://github.com/omateuscastro/cgi_versoes_helper
 
 environment:
   sdk: ">=2.7.0 <3.0.0"
