@@ -1,3 +1,8 @@
+## [1.0.6] - 22/05/2020.
+
+* Adicionada validação do modo do build (debug/release) para verificar versão mais recente do app.
+* Ajustada ordenação das notas de versão para visualização de modo decrescente.
+
 ## [1.0.5] - 22/05/2020.
 
 * Adicionada dependencia do cloud_firestore.

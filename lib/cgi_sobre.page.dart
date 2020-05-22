@@ -2,6 +2,7 @@ library cgi_versoes_helper;
 
 import 'package:cgi_versoes_helper/cgi_notas_versao.page.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:package_info/package_info.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -17,7 +18,7 @@ class _CGISobrePageState extends State<CGISobrePage> {
   Future<String> getVersionNumber() async {
     PackageInfo packageInfo = await PackageInfo.fromPlatform();
     return packageInfo.version;
-  }  
+  }
 
   Future<String> getUrlPackageName() async {
     PackageInfo packageInfo = await PackageInfo.fromPlatform();
@@ -40,15 +41,19 @@ class _CGISobrePageState extends State<CGISobrePage> {
 
     int _iVersaoAtual = this.versonify(versaoAtual);
 
-    QuerySnapshot snapshot =
-        await Firestore.instance.collection("Info").limit(1).getDocuments();
+    String modo = '';
 
-    List<UltimaVersao> ultimaVersao =
-      snapshot.documents.map((ult) => new UltimaVersao.fromDocument(ult)).toList();
+    if (kReleaseMode) {
+      modo = "release";
+    } else {
+      modo = "debug";
+    }
 
-    var ult = ultimaVersao[0];
+    DocumentSnapshot doc =
+        await Firestore.instance.collection("Info").document(modo).get();
 
-    int _iUltimaVersao = this.versonify(ult.lastVersion);
+    UltimaVersao ultimaVersao = new UltimaVersao.fromDocument(doc);
+    int _iUltimaVersao = this.versonify(ultimaVersao.lastVersion);
 
     return !(_iVersaoAtual < _iUltimaVersao);
   }
@@ -137,7 +142,8 @@ class _CGISobrePageState extends State<CGISobrePage> {
                 onPressed: () {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => CGINotasVersaoPage()),
+                    MaterialPageRoute(
+                        builder: (context) => CGINotasVersaoPage()),
                   );
                 },
               ),
@@ -150,7 +156,7 @@ class _CGISobrePageState extends State<CGISobrePage> {
 
   _launchURL() async {
     final url = await getUrlPackageName();
-   
+
     if (await canLaunch(url)) {
       await launch(url);
     } else {

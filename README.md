@@ -4,7 +4,7 @@ Pacote para controle de Versão dos Aplicativos da CGI Software.
 
 ## Instalação.
 
-Adicione o cgi_versoes_helper: 1.0.3 no pubspec.yaml do seu aplicativo.
+Adicione o cgi_versoes_helper: 1.0.6 no pubspec.yaml do seu aplicativo.
 
 ## Utilização.
 
